@@ -1,5 +1,7 @@
 import React from 'react'
+import '../style.css'
 import { House, LogOut, MapPin, Search, ShoppingCart, User } from 'lucide-react';
+import logo from '/images/logo.png'
 
 const Header = () => {
     return (
@@ -7,7 +9,7 @@ const Header = () => {
             <header className="h-[80px] shadow-md">
                 <section className="wrapper h-full flex justify-between items-center">
                     <div>
-                        
+                        <img src={logo} alt="" class="w-[90px]" />
                     </div>
 
                     <div className="hidden lg:block">

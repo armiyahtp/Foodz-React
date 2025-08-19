@@ -1,0 +1,10 @@
+.wrapper {
+  width: 90%;
+  margin: 0 auto;
+}
+
+
+.bg {
+  background-color: #F44336;
+  color: white;
+}
