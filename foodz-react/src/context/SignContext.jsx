@@ -45,8 +45,15 @@ export const SignProvider = ({ children }) => {
     setRegister("hidden")
   }
 
+
+  const logout = () => {
+    localStorage.removeItem("BearToken")
+    setLogin("block")
+    setAuthenticated(false)
+  }
+
   return (
-    <SignContext.Provider value={{ register, showRegister, hideRegister, login, showLogin, hideLogin, isAuthenticated, isAuth}}>
+    <SignContext.Provider value={{ register, showRegister, hideRegister, login, showLogin, hideLogin, isAuthenticated, isAuth, logout}}>
       {children}
     </SignContext.Provider>
   );

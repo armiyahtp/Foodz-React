@@ -5,7 +5,7 @@ import { useSign } from '../../context/SignContext';
 
 const Header = () => {
 
-    const { showRegister, showLogin, isAuthenticated } = useSign()
+    const { showRegister, showLogin, isAuthenticated, logout } = useSign()
 
     const [lgtogle, setLgTogle] = useState("lg-togle-box")
     const [btnOne, setBtnOne] = useState("btn")
@@ -13,7 +13,9 @@ const Header = () => {
     const [open, setOpen] = useState(false)
 
     
-
+    const handleLogout = () => {
+        logout()
+    }
     
 
     const addLgTogle = () => {
@@ -51,7 +53,7 @@ const Header = () => {
                                 <MapPin className="w-[20px]"/>
                                 <p className="text-[#515151] text-[18px] pb-1 border-b-2 border-yellow-400">Tirur, Malappuram</p> 
                             </a>
-                            <LogOut className='w-[18px]' />
+                            <LogOut onClick={handleLogout} className='w-[18px] cursor-pointer' />
                         </div>
                         
                     :
