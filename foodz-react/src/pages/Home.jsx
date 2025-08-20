@@ -4,9 +4,13 @@ import { Autoplay } from 'swiper/modules'
 import 'swiper/css';
 import { axiosinstance } from '../config/axios';
 import Restaurent from '../components/home/Restaurent';
+import { useSign } from '../context/SignContext';
+import Register from './Register';
+import Login from './Login';
 
 const Home = () => {
 
+    const { register, login } = useSign()
     const [sliders, setSliders] = useState([])
     const [categories, setCategories] = useState([])
 
@@ -78,7 +82,7 @@ const Home = () => {
                     <div className="flex justify-start overflow-x-scroll items-center ">
                         {
                             categories.map((item,index) => (
-                                <div key={index} className="min-w-[25%] max-w-[25%] sm:min-w-[20%] sm:max-w-[20%] md:min-w-[15%] md:max-w-[15%] mr-6">
+                                <div key={index} className="min-w-[25%] max-w-[25%] sm:min-w-[20%] sm:max-w-[20%] md:min-w-[12%] md:max-w-[12%] mr-6">
                                     <a href="">
                                         <img src={item.image} alt=""/>
                                         <h3 className="text-[#515151] text-center">{item.name}</h3>
@@ -91,6 +95,14 @@ const Home = () => {
             </section>
 
             <Restaurent />
+
+
+            <div className={`${register} fixed inset-0 z-50`}>
+                <Register />
+            </div>
+            <div className={`${login} fixed inset-0 z-50`}>
+                <Login />
+            </div>
         </div>
     )
 }

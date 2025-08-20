@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { House, LogOut, MapPin, Search, ShoppingCart, User } from 'lucide-react';
 import logo from '/images/logo.png'
+import { useSign } from '../../context/SignContext';
 
 const Header = () => {
+
+    const { showRegister, showLogin } = useSign()
+
+    const [lgtogle, setLgTogle] = useState("lg-togle-box")
+    const [btnOne, setBtnOne] = useState("btn")
+    const [btnTwo, setBtnTwo] = useState("btn active")
+
+
+
+    const addLgTogle = () => {
+        setLgTogle("lg-togle-box active")
+        setBtnOne("btn active")
+        setBtnTwo("btn")
+    }
+
+    const removeLgTogle = () => {
+        setLgTogle("lg-togle-box")
+        setBtnOne("btn")
+        setBtnTwo("btn active")
+    }
     return (
         <div>
             <header className="h-[80px] shadow-md">
@@ -25,9 +46,11 @@ const Header = () => {
                             <MapPin className="w-[18px] mr-3"/>
                             <p className="text-[#515151] text-[18px] pb-1 border-b-2 border-yellow-400">Tirur, Malappuram</p>
                         </a>
-                        <a href="">
-                            <LogOut className="w-[18px]"/>
-                        </a>
+                        <div className='hidden lg:flex bg-[#f1f8ff] z-10 shadow-inner rounded-md p-1 ml-4'>
+                            <div className={`${lgtogle} shadow -z-10`}></div>
+                            <button onClick={showLogin} onMouseEnter={removeLgTogle} className={`btn1 px-6 py-[9px] ${btnTwo} rounded-md`}>Sign In</button>
+                            <button onClick={showRegister} onMouseEnter={addLgTogle} className={`px-6 py-[9px] ${btnOne} rounded-md`}>Sign Up</button>
+                        </div>
                     </div>
 
                 </section>

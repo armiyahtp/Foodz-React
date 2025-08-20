@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+.lg-togle-box{
+    background-color: #ff8132;
+    position: absolute;
+    padding: 1.3rem 3.2rem 1.3rem 3.2rem;
+    right: 178px;
+    border-radius: 0.375rem;
+    transition: .8s ease-in-out;
+}
+
+.lg-togle-box.active{
+    right: 80px;
+}
+
+.btn{
+    color: black;
+    transition: .8s ease-in-out;
+}
+
+
+.btn.active{
+    color: white;
+}
