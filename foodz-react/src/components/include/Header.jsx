@@ -5,13 +5,16 @@ import { useSign } from '../../context/SignContext';
 
 const Header = () => {
 
-    const { showRegister, showLogin } = useSign()
+    const { showRegister, showLogin, isAuthenticated } = useSign()
 
     const [lgtogle, setLgTogle] = useState("lg-togle-box")
     const [btnOne, setBtnOne] = useState("btn")
     const [btnTwo, setBtnTwo] = useState("btn active")
+    const [open, setOpen] = useState(false)
 
+    
 
+    
 
     const addLgTogle = () => {
         setLgTogle("lg-togle-box active")
@@ -41,17 +44,36 @@ const Header = () => {
                         </ul>
                     </div>
 
-                    <div className="flex justify-start items-center">
-                        <a href="" className="flex justify-start items-center mr-8">
-                            <MapPin className="w-[18px] mr-3"/>
-                            <p className="text-[#515151] text-[18px] pb-1 border-b-2 border-yellow-400">Tirur, Malappuram</p>
-                        </a>
-                        <div className='hidden lg:flex bg-[#f1f8ff] z-10 shadow-inner rounded-md p-1 ml-4'>
-                            <div className={`${lgtogle} shadow -z-10`}></div>
-                            <button onClick={showLogin} onMouseEnter={removeLgTogle} className={`btn1 px-6 py-[9px] ${btnTwo} rounded-md`}>Sign In</button>
-                            <button onClick={showRegister} onMouseEnter={addLgTogle} className={`px-6 py-[9px] ${btnOne} rounded-md`}>Sign Up</button>
+
+                    {isAuthenticated?
+                        <div className="flex justify-start items-center">
+                            <a href="" className="mr-4 flex items-center justify-center">
+                                <MapPin className="w-[20px]"/>
+                                <p className="text-[#515151] text-[18px] pb-1 border-b-2 border-yellow-400">Tirur, Malappuram</p> 
+                            </a>
+                            <LogOut className='w-[18px]' />
                         </div>
-                    </div>
+                        
+                    :
+                        <div className="flex justify-start items-center">
+                            <a href="" className="mr-4 relative"
+                                onMouseEnter={() => setOpen(true)}
+                                onMouseLeave={() => setOpen(false)}
+                            >
+                                <MapPin className="w-[20px]"/>
+                                {open && (
+                                    <div className='absolute bg-white p-3 w-[180px]'>
+                                        <p className="text-[#515151] text-[18px] pb-1 border-b-2 border-yellow-400">Tirur, Malappuram</p>
+                                    </div>  
+                                )}
+                            </a>
+                            <div className='hidden lg:flex bg-[#f1f8ff] z-10 shadow-inner rounded-md p-1 ml-4'>
+                                <div className={`${lgtogle} shadow -z-10`}></div>
+                                <button onClick={showLogin} onMouseEnter={removeLgTogle} className={`btn1 px-6 py-[9px] ${btnTwo} rounded-md`}>Sign In</button>
+                                <button onClick={showRegister} onMouseEnter={addLgTogle} className={`px-6 py-[9px] ${btnOne} rounded-md`}>Sign Up</button>
+                            </div>
+                        </div>
+                    }
 
                 </section>
             </header>
