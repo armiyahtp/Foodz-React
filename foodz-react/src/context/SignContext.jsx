@@ -53,7 +53,7 @@ export const SignProvider = ({ children }) => {
   }
 
   return (
-    <SignContext.Provider value={{ register, showRegister, hideRegister, login, showLogin, hideLogin, isAuthenticated, isAuth, logout}}>
+    <SignContext.Provider value={{ register, showRegister, hideRegister, login, showLogin, hideLogin, isAuthenticated, isAuth, logout, setLogin}}>
       {children}
     </SignContext.Provider>
   );

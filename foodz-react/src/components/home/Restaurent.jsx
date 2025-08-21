@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { axiosinstance } from '../../config/axios';
 import clock from '/images/clock.png'
 import star from '/images/star.png'
+import discount from '/images/discount.png'
 import { Link } from 'react-router-dom';
 
 const Restaurent = () => {
@@ -27,7 +28,7 @@ const Restaurent = () => {
                         {
                             stores.map((store, index) => (
                                 <div key={index} className="col-span-1 rounded-lg border p-7">
-                                    <Link to={`/single-res/${store.id}`}>
+                                    <Link to={`/user/single-res/${store.id}`}>
                                         <a href="" className="flex justify-start items-center">
                                             <img src={store.image} alt="" className="w-[30%] rounded-lg mr-5"/>
                                             <div className="w-[70%]">
@@ -44,7 +45,7 @@ const Restaurent = () => {
                                                     </span>
                                                 </div>
                                                 <span className="flex justify-start items-center text-red-600 text-[12px] font-semibold">
-                                                    <img src="" alt="" className="w-[13px] mr-2"/>
+                                                    <img src={discount} alt="" className="w-[13px] mr-2"/>
                                                     {store.offer}
                                                 </span>
                                             </div>

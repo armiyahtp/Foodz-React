@@ -1,34 +1,55 @@
 import { ShoppingCart } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import clock from '/images/clock.png'
 import star from '/images/star.png'
+import discount from '/images/discount.png'
 import { useParams } from 'react-router-dom'
+import { axiosinstance } from '../config/axios'
 
 const SingleRstaurant = () => {
     const { id } = useParams()
-    console.log(id)
+    const [restaurant, setRestaurant] = useState({})
+
+    const num = Number(id)
+    const token = localStorage.getItem('BearToken')
+
+    useEffect(()=>{
+        const getSingleRestaurant = async () => {
+            try {
+                const response = await axiosinstance.get(`single/rest/${num}/`, {
+                    headers: {Authorization: `Bearer ${token}`}
+                })
+                setRestaurant(response.data.data)
+                console.log(restaurant)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getSingleRestaurant()
+    },[])
     return (
         <div>
             <section class="py-10 lg:px-[25%]">
                 <section class="wrapper">
                     <div class="rounded-lg shadow-lg border p-5">
                         <a href="" class="flex justify-start items-start">
-                            <img src="" alt="" class="w-[40%] md:w-[30%] rounded-lg mr-6" />
+                            <img src={restaurant.image} alt="" class="w-[40%] md:w-[30%] rounded-lg mr-6" />
                             <div class="w-[60%] md:w-[70%]">
-                                <h3 class="text-[#515151] text-[16px] font-semibold mb-2"></h3>
-                                <p class="text-[#515151] text-[12px]"></p>
+                                <h3 class="text-[#515151] text-[16px] font-semibold mb-2">{restaurant.name}</h3>
+                                <p class="text-[#515151] text-[12px]">{restaurant.tagline}</p>
                                 <div class="flex justify-start items-center mt-5 mb-3">
                                     <span class="flex justify-start items-center text-[#515151] text-[14px] font-semibold mr-4">
                                         <img src={star} alt="image" class="w-[16px] mr-2" />
-
+                                        {restaurant.rating}
                                     </span>
                                     <span class="flex justify-start items-center text-[#515151] text-[14px] font-semibold">
                                         <img src={clock} alt="image" class="w-[16px] mr-2" />
-                                        min
+                                        {restaurant.time} min
                                     </span>
                                 </div>
                                 <span class="flex justify-start items-center text-red-600 text-[10px] md:text-[13px] font-semibold">
-                                    <img src="" alt="" class="w-[13px] mr-2" />
+                                    <img src={discount} alt="" class="w-[13px] mr-2" />
+                                    {restaurant.offer}
                                 </span>
                             </div>
                         </a>
