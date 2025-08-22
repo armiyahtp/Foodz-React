@@ -10,38 +10,11 @@ import { axiosinstance } from '../config/axios'
 
 const SingleRstaurant = () => {
     const { id } = useParams()
-    const [restaurant, setRestaurant] = useState({})
-    const [foodCategories, setFoodCategory] = useState([])
-    const [foodItems, setFoodItems] = useState([])
-    const [carts, setCart] = useState([])
+    const [restaurantCategory, setRestaurantCategory] = useState([]);
+    const [restaurant, setRestaurant] = useState({});
+    const [cartSummary, setCartSummary] = useState({ items: 0, amount: 0 });
+    const [products, setProducts] = useState([]);
 
-    let foodArray = [];
-
-    foodCategories.forEach((category) => {
-        const items = foodItems
-            .filter((item) => item.categry == category.id)
-            .map((item) => {
-                const cartItem = carts.find((cart) => cart.product == item.id);
-
-                return {
-                    ...item,
-                    inCart: !!cartItem,
-                    cartData: cartItem || null
-                };
-            });
-
-        foodArray.push({
-            categoryId: category.id,
-            categoryName: category.name,
-            items: items
-        });
-    });
-
-
-
-    const totalPrice = carts.reduce((sum, item) => {
-        return sum + item.amnt; 
-    }, 0);
 
 
 
@@ -59,8 +32,11 @@ const SingleRstaurant = () => {
                 const response = await axiosinstance.get(`single/rest/${num}/`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
-                setRestaurant(response.data.data)
-
+                console.log(response)
+                setRestaurantCategory(response.data.food_categories);
+                setRestaurant(response.data.store);
+                setProducts(response.data.product_with_quantities)
+                setCartSummary({ items: response.data.items, amount: response.data.amount });
             } catch (error) {
                 console.log(error)
             }
@@ -68,50 +44,9 @@ const SingleRstaurant = () => {
         getSingleRestaurant()
     }, [])
 
-    useEffect(() => {
-        const getFoodCategory = async () => {
-            try {
-                const response = await axiosinstance.get(`store/food/category/${num}/`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                setFoodCategory(response.data.data)
-
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getFoodCategory()
-    }, [])
 
 
-    useEffect(() => {
-        const getFood = async () => {
-            try {
-                const response = await axiosinstance.get('food/items/', {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                setFoodItems(response.data.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getFood()
-    }, [])
 
-
-    useEffect(() => {
-        const getCart = async () => {
-            try {
-                const response = await axiosinstance.get('cart/', {
-                    headers: { Authorization: `Bearer ${token}` }
-                })
-                setCart(response.data.data)
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        getCart()
-    }, [])
 
 
     return (
@@ -148,43 +83,46 @@ const SingleRstaurant = () => {
 
             <section className="py-10 lg:px-[25%] mb-14 lg:mb-0">
                 <section className="wrapper">
-                    {foodArray.map((category, index) => (
-                        category.items.length !== 0 && (
+                    {restaurantCategory.map((category, index) => (
+                        category.fooditem.length !== 0 && (
                             <div className="border-b-4 mb-12" key={index}>
-                                <h2 className="text-[#515151] text-[20px] font-bold p-5">{category.categoryName}</h2>
+                                <h2 className="text-[#515151] text-[20px] font-bold p-5">{category.name}</h2>
 
-                                {category.items.map((item, itemIndex) => (
-                                    <div className="border-b p-5" key={itemIndex}>
-                                        <div className="flex justify-between items-start">
-                                            <div className="w-[60%] md:w-[75%]">
-                                                {item.is_veg ?
-                                                    <img src={veg} alt="" className="w-[14px]" />
-                                                    :
-                                                    <img src={non} alt="" className="w-[14px]" />
-                                                }
+                                {products.map((item, itemIndex) => (
+                                    item.product.categry == category.id && (
+                                        <div className="border-b p-5" key={itemIndex}>
+                                            <div className="flex justify-between items-start">
+                                                <div className="w-[60%] md:w-[75%]">
+                                                    {item.product.is_veg ?
+                                                        <img src={veg} alt="" className="w-[14px]" />
+                                                        :
+                                                        <img src={non} alt="" className="w-[14px]" />
+                                                    }
 
-                                                <h3 className="text-[#515151] text-[16px] font-bold mb-1">{item.name}</h3>
-                                                <p className="text-[#515151] text-[16px] font-semibold mb-5">₹ {item.price}</p>
+                                                    <h3 className="text-[#515151] text-[16px] font-bold mb-1">{item.product.name}</h3>
+                                                    <p className="text-[#515151] text-[16px] font-semibold mb-5">₹ {item.product.price}</p>
 
-                                                {item.inCart ?
-                                                    <div className="rounded-lg flex ">
-                                                        <a href="" className="w-[30px] h-[34px] text-center py-[3px] bg-[#2AC489] rounded-s-lg text-white font-semibold">-</a>
-                                                        <span className="text-center w-6 border-b pb-1 border-t pt-1 ">{item.cartData.qty}</span>
-                                                        <a href="" className="w-[30px] h-[34px] text-center py-[3px] bg-[#2AC489] rounded-e-lg text-white font-semibold">+</a>
-                                                    </div>
-                                                    :
-                                                    <a href="">
-                                                        <button className="text-[12px] text-white font-semibold rounded-md border-2 py-[2px] px-3 bg-[#2AC489]">ADD</button>
-                                                    </a>
-                                                }
+                                                    {item.quantity ? (
+                                                        <div key={id} className="rounded-lg flex ">
+                                                            <a href="" className="w-[30px] h-[34px] text-center py-[3px] bg-[#2AC489] rounded-s-lg text-white font-semibold">-</a>
+                                                            <span className="text-center w-6 border-b pb-1 border-t pt-1 ">{item.quantity}</span>
+                                                            <a href="" className="w-[30px] h-[34px] text-center py-[3px] bg-[#2AC489] rounded-e-lg text-white font-semibold">+</a>
+                                                        </div>
+                                                    )
+                                                        : (
+                                                            <a href="">
+                                                                <button className="text-[12px] text-white font-semibold rounded-md border-2 py-[2px] px-3 bg-[#2AC489]">ADD</button>
+                                                            </a>
+                                                        )}
 
 
-                                            </div>
-                                            <div className="w-[40%] md:w-[20%]">
-                                                <img src={item.image} alt="" className="w-full shadow-lg rounded-lg mr-6" />
+                                                </div>
+                                                <div className="w-[40%] md:w-[20%]">
+                                                    <img src={item.product.image} alt="" className="w-full shadow-lg rounded-lg mr-6" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    )
                                 ))}
 
                             </div>
@@ -196,9 +134,9 @@ const SingleRstaurant = () => {
 
 
 
-                    {carts.length !== 0 && (
+                    {cartSummary.items !== 0 && (
                         <div className="bg-red-500 px-4 rounded-xl h-[50px] flex justify-between items-center">
-                            <p className="text-[16px] text-white font-semibold">{carts.length} item | ₹ {totalPrice}</p>
+                            <p className="text-[16px] text-white font-semibold">{cartSummary.items} item | ₹ {cartSummary.amount}</p>
                             <a href="" className="flex justify-start items-center">
                                 <p className="text-[16px] text-white font-semibold mr-3">View Cart</p>
                                 <ShoppingCart className="w-[18px] text-white" />

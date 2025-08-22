@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { House, LogOut, MapPin, Search, ShoppingCart, User } from 'lucide-react';
 import logo from '/images/logo.png'
 import { useSign } from '../../context/SignContext';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 
@@ -39,10 +40,10 @@ const Header = () => {
 
                     <div className="hidden lg:block">
                         <ul className="flex items-center">
-                            <li className="mr-7"><a href="" className="flex justify-start items-center text-[#515151] text-[18px]"><House className="w-[18px] mr-2"/>Home</a></li>
-                            <li className="mr-7"><a href="#" className="flex justify-start items-center text-[#515151] text-[18px]"><Search className="w-[18px] mr-2"/>Search</a></li>
-                            <li className="mr-7"><a href="" className="flex justify-start items-center text-[#515151] text-[18px]"><ShoppingCart className="w-[18px] mr-2"/>Cart</a></li>
-                            <li><a href="" className="flex justify-start items-center text-[#515151] text-[18px]"><User className="w-[18px] mr-2"/>Account</a></li>
+                            <Link to={'/'}><li className="mr-7"><div className="flex justify-start items-center text-[#515151] text-[18px]"><House className="w-[18px] mr-2"/>Home</div></li></Link>
+                            <Link><li className="mr-7"><div className="flex justify-start items-center text-[#515151] text-[18px]"><Search className="w-[18px] mr-2"/>Search</div></li></Link>
+                            <Link to={'/user/cart'}><li className="mr-7"><div className="flex justify-start items-center text-[#515151] text-[18px]"><ShoppingCart className="w-[18px] mr-2"/>Cart</div></li></Link>
+                            <Link><li><div className="flex justify-start items-center text-[#515151] text-[18px]"><User className="w-[18px] mr-2"/>Account</div></li></Link>
                         </ul>
                     </div>
 

@@ -4,6 +4,7 @@ import UserLayout from "../layouts/UserLayout";
 import Home from '../pages/Home.jsx';
 import SingleRstaurant from "../pages/SingleRstaurant.jsx";
 import AuthUser from "./protectedRout/AuthUser.jsx";
+import Cart from "../pages/Cart.jsx";
 
 
 export const router = createBrowserRouter([
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
           {
             path: "single-res/:id",
             element: <SingleRstaurant />
+          },
+          {
+            path: "cart",
+            element: <Cart />
           }
         ]
       },
